@@ -1,8 +1,7 @@
 import { apiClient } from '@/config/api-client';
 
 import { AUTH_API_ENDPOINTS } from '../constants';
-import { LoginFormValues, RegisterFormValues } from '../schemas';
-import { AuthResponse } from '../types';
+import { AuthResponse, LoginFormValues, RegisterFormValues } from '../types';
 
 export const authService = {
   login: async (data: LoginFormValues): Promise<AuthResponse> => {

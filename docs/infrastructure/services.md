@@ -1,46 +1,64 @@
 # Services Documentation
 
-## Module Overview
+## Overview
 
-Services encapsulate complex business logic and infrastructure details, providing a clean API to the rest of the application. The primary service is the **Secure Storage Service**, which manages the persistence of sensitive data.
+Services encapsulate complex infrastructure concerns behind a clean, stable API. The primary service is the **Secure Storage Service**, which manages all sensitive data persistence using `expo-secure-store`.
 
-### Key Capabilities
+**Location**: `src/services/secure-storage-service/`
 
-- **Encapsulated Logic**: Hides the complexity of third-party libraries behind simple interfaces.
-- **Interchangeable Foundations**: Built using the Adapter Pattern, allowing underlying storage engines to be swapped without changing the service's public API.
+| File                                  | Responsibility                                                          |
+| ------------------------------------- | ----------------------------------------------------------------------- |
+| `secure-storage-service.ts`           | Public service singleton — all getter/setter methods                    |
+| `secure-storage-service.constants.ts` | Storage key definitions (`STORAGE_KEYS`)                                |
+| `secure-storage-service.types.ts`     | Type definitions (e.g., `UserInfo`)                                     |
+| `secure-storage-service.utils.ts`     | `storageAdapter` — wraps `expo-secure-store` behind a generic interface |
 
-## Maintenance & Extension Guide
+## Core Capabilities
 
-We follow a layered architecture to ensure that infrastructure changes don't leak into the business logic.
-
-### How to make changes:
-
-- **Adding a New Service**: Create a dedicated folder in `src/services/` (e.g., `src/services/auth-service`). Follow the standard file pattern: Implementation (`.ts`), Types (`.types.ts`), Constants (`.constants.ts`), and Utilities (`.utils.ts`).
-- **Swapping Storage Engines**: If migrating away from `expo-secure-store`, only the `storageAdapter` in `src/services/secure-storage-service/secure-storage-service.utils.ts` needs to be updated.
-- **Updating Keys**: Add new persistent keys to the service-specific `constants.ts` and implement matching getter/setter methods.
-
-> [!TIP]
-> By keeping the implementation details inside utilities and adapters, the main service file remains a clean manifest of available capabilities.
+- **Auth Token Management**: `setAccessToken`, `getAccessToken`, `setRefreshToken`, `getRefreshToken`, `clearAuth`.
+- **User Session**: `setUserInfo`, `getUserInfo` — automatically handles JSON serialisation/deserialisation.
+- **Zustand StateStorage**: `getItem`, `setItem`, `removeItem` — satisfies Zustand's `StateStorage` interface, allowing `secureStorageService` to be passed directly to `createJSONStorage()` in any persisted Zustand store.
+- **Adapter Pattern**: The underlying storage engine is abstracted behind `storageAdapter` in `secure-storage-service.utils.ts`. Swapping `expo-secure-store` for another provider only requires changing the adapter — the service API stays the same.
 
 ## Technical Deep Dive
 
 ### The Adapter Pattern
 
-The `secureStorageService` wraps the storage engine, ensuring the app isn't tightly coupled to any specific persistence library.
+```
+secureStorageService
+       │
+       ▼
+  storageAdapter          ← only this changes if the storage engine changes
+       │
+       ▼
+expo-secure-store
+```
 
-### Storage Service API
+`secureStorageService` calls `storageAdapter.get/set/remove`. If the storage engine changes (e.g., migrating to `@react-native-async-storage/async-storage`), only `storageAdapter` needs updating — zero changes to the service API or any consumer.
 
-- **Auth Tokens**: `setAccessToken`, `setRefreshToken`, `clearAuth`.
-- **User Session**: `setUserInfo`, `getUserInfo` (automatically handles JSON serialization).
+### Zustand Persist Integration
 
-### Standard File Pattern
+```typescript
+import { secureStorageService } from '@/services';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
-Each service follows this strict structure:
+persist(
+  (set) => ({ ... }),
+  {
+    name: STORAGE_KEY,
+    storage: createJSONStorage(() => secureStorageService),
+  }
+)
+```
 
-1.  **constants.ts**: Internal keys and configuration.
-2.  **types.ts**: Interface definitions for the service.
-3.  **utils.ts**: Underlying library abstractions and adapters.
-4.  **main service file**: The exported singleton that orchestrates the above.
+`secureStorageService.getItem`, `setItem`, and `removeItem` are placed at the top of the service object so they are immediately visible as the Zustand adapter interface.
+
+## Maintenance & Extension Guide
+
+- **Add a new stored value**: Add its key to `STORAGE_KEYS` in `secure-storage-service.constants.ts`, add its type to `secure-storage-service.types.ts`, and implement getter/setter methods in the service file.
+- **Swap storage engine**: Update `storageAdapter` in `secure-storage-service.utils.ts` only — the service API is unaffected.
+- **Add a new service**: Create a dedicated folder in `src/services/` following the same four-file pattern (`.ts`, `.constants.ts`, `.types.ts`, `.utils.ts`). Only create files that are actually needed.
+- **Add a new persisted Zustand store**: Pass `secureStorageService` directly to `createJSONStorage()` — no separate storage wrapper needed.
 
 <br>
---- Last Updated: 2026-02-25 ---
+--- Last Updated: 2026-03-02 ---

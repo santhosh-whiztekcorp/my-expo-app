@@ -12,7 +12,7 @@ import {
   UpsertAppCacheListArgs,
 } from './query-client.types';
 
-export const invalidateAppQueries = async (args: InvalidateAppQueriesArgs) => {
+export async function invalidateAppQueries(args: InvalidateAppQueriesArgs) {
   const { keys } = args;
 
   return Promise.all(
@@ -22,9 +22,9 @@ export const invalidateAppQueries = async (args: InvalidateAppQueriesArgs) => {
       }),
     ),
   );
-};
+}
 
-export const upsertAppCacheList = <T extends Identifiable>(args: UpsertAppCacheListArgs<T>) => {
+export function upsertAppCacheList<T extends Identifiable>(args: UpsertAppCacheListArgs<T>) {
   const { queryKey, item, position = 'start' } = args;
 
   queryClient.setQueryData<T[]>(queryKey, (oldData) => {
@@ -38,27 +38,27 @@ export const upsertAppCacheList = <T extends Identifiable>(args: UpsertAppCacheL
 
     return position === 'start' ? [item, ...oldData] : [...oldData, item];
   });
-};
+}
 
-export const removeFromAppCacheList = (args: RemoveFromAppCacheListArgs) => {
+export function removeFromAppCacheList(args: RemoveFromAppCacheListArgs) {
   const { queryKey, id } = args;
 
   queryClient.setQueryData<Identifiable[]>(queryKey, (oldData) => {
     if (!oldData) return [];
     return oldData.filter((existingItem) => existingItem.id !== id);
   });
-};
+}
 
-export const updateAppCacheItem = <T>(args: UpdateAppCacheItemArgs<T>) => {
+export function updateAppCacheItem<T>(args: UpdateAppCacheItemArgs<T>) {
   const { queryKey, updatedData } = args;
 
   queryClient.setQueryData<T>(queryKey, (oldData) => {
     if (!oldData) return undefined;
     return { ...oldData, ...updatedData };
   });
-};
+}
 
-export const upsertAppCacheInfiniteList = <T extends Identifiable>(args: UpsertAppCacheInfiniteListArgs<T>) => {
+export function upsertAppCacheInfiniteList<T extends Identifiable>(args: UpsertAppCacheInfiniteListArgs<T>) {
   const { queryKey, item } = args;
 
   queryClient.setQueryData<InfiniteData<T[]>>(queryKey, (oldData) => {
@@ -82,9 +82,9 @@ export const upsertAppCacheInfiniteList = <T extends Identifiable>(args: UpsertA
       pages: [[item, ...oldData.pages[0]], ...oldData.pages.slice(1)],
     };
   });
-};
+}
 
-export const removeFromAppCacheInfiniteList = (args: RemoveFromAppCacheInfiniteListArgs) => {
+export function removeFromAppCacheInfiniteList(args: RemoveFromAppCacheInfiniteListArgs) {
   const { queryKey, id } = args;
 
   queryClient.setQueryData<InfiniteData<Identifiable[]>>(queryKey, (oldData) => {
@@ -95,4 +95,4 @@ export const removeFromAppCacheInfiniteList = (args: RemoveFromAppCacheInfiniteL
       pages: oldData.pages.map((page) => page.filter((existingItem) => existingItem.id !== id)),
     };
   });
-};
+}

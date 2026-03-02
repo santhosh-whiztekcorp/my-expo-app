@@ -9,8 +9,6 @@ export const APP_FONTS = {
   'Montserrat-ExtraLight': require('../../assets/fonts/montserrat/Montserrat-ExtraLight.ttf'),
 } as const;
 
-export type AppFontName = keyof typeof APP_FONTS;
-
 export const FONT_FAMILY = {
   montserrat: {
     regular: 'Montserrat-Regular',

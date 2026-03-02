@@ -3,6 +3,10 @@ import { UserInfo } from './secure-storage-service.types';
 import { storageAdapter } from './secure-storage-service.utils';
 
 export const secureStorageService = {
+  getItem: (name: string) => storageAdapter.get(name),
+  setItem: (name: string, value: string) => storageAdapter.set(name, value),
+  removeItem: (name: string) => storageAdapter.remove(name),
+
   async setAccessToken(token: string) {
     await storageAdapter.set(STORAGE_KEYS.ACCESS_TOKEN_KEY, token);
   },
@@ -35,9 +39,4 @@ export const secureStorageService = {
       storageAdapter.remove(STORAGE_KEYS.USER_INFO_KEY),
     ]);
   },
-
-  // StateStorage compatible methods for Zustand persist
-  getItem: (name: string) => storageAdapter.get(name),
-  setItem: (name: string, value: string) => storageAdapter.set(name, value),
-  removeItem: (name: string) => storageAdapter.remove(name),
 };

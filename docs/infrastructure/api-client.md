@@ -1,34 +1,27 @@
 # API Client Documentation
 
-## Module Overview
+## Overview
 
-The API client is a centralized module built on **Axios** that orchestrates all network communication. It is designed to be resilient, handle authentication seamlessly, and provide transparent logging for debugging.
+The API client is a centralized module built on **Axios** that handles all network communication. It is designed to be resilient, manage authentication seamlessly, and provide transparent logging for debugging.
 
-### Core Capabilities
+**Location**: `src/config/api-client/`
 
-- **Bearer Authentication**: Automatically manages and injects access tokens.
-- **Resilient Token Refresh**: Implements a singleton pattern to handle expired tokens gracefully across concurrent requests.
-- **Activity Logging**: Captures detailed request/response metrics to simplify troubleshooting.
+| File                      | Responsibility                                      |
+| ------------------------- | --------------------------------------------------- |
+| `api-client.ts`           | Core Axios instance and interceptor setup           |
+| `api-client.constants.ts` | Base URL, timeout, log toggles                      |
+| `api-client.utils.ts`     | Token access, refresh logic, logout handler         |
+| `api-client.types.ts`     | Extended Axios types (e.g., `_retry`, `_startTime`) |
 
-## Maintenance & Extension Guide
+## Core Capabilities
 
-To ensure the stability of the application's networking layer, we follow a **Utility-First Maintenance Strategy**. The core coordination logic in `api-client.ts` is stable and should rarely be touched.
-
-### How to make changes:
-
-- **Changing API Environments**: Update `BASE_URL` in `src/config/api-client/api-client.constants.ts`.
-- **Enabling/Disabling Logs**: Toggle `ENABLE_LOGS` in `api-client.constants.ts`.
-- **Filtering Sensitive Routes**: Add partial URL paths to `LOG_IGNORED_URLS` in `api-client.constants.ts`.
-- **Updating Logic (Storage/Auth)**: If the underlying storage or auth logic changes (e.g., swapping `SecureStore`), update the implementation in `src/config/api-client/api-client.utils.ts`.
-
-> [!TIP]
-> By modifying utilities instead of the core client, you avoid risky changes to the interceptor chain and the complex asynchronous "Singleton Refresh" logic.
+- **Bearer Authentication**: Automatically injects access tokens into every request.
+- **Resilient Token Refresh**: Singleton pattern prevents duplicate refresh requests when multiple concurrent calls expire at the same time — queued requests resolve with the new token.
+- **Activity Logging**: Captures request method, URL, status, and duration on every interaction for easy debugging.
 
 ## Technical Deep Dive
 
 ### Client Initialization
-
-The client uses a configured Axios instance in `api-client.ts`:
 
 ```typescript
 export const apiClient = axios.create({
@@ -39,27 +32,38 @@ export const apiClient = axios.create({
 
 ### Request Interceptor
 
-- **Token Injection**: Calls `getAccessToken()` from utilities.
-- **Execution Timing**: Attaches a `_startTime` to the config to calculate precise request duration in the response interceptor.
+- **Token Injection**: Calls `getAccessToken()` from `api-client.utils.ts` and attaches it as a `Bearer` header.
+- **Timing**: Stamps `config._startTime = Date.now()` to measure precise request duration in the response interceptor.
 
-### Response Interceptor (The "Brain")
+### Response Interceptor
 
-- **Success Handler**: Executes `logInteraction` and returns data directly.
-- **Error Handler (401 Handling)**:
-  - Detects expired tokens.
-  - If a refresh is already in progress, it queues the request to resolve once the new token is available.
-  - Otherwise, it triggers `refreshTokenRequest`, updates the store, and retries the original request.
-  - If the refresh token is also expired, it triggers `handleLogout`.
+- **Success**: Calls `logInteraction` and returns `response.data` directly.
+- **401 / Token Expiry**:
+  1. If a refresh is already in progress → queues the request, resolves it once the new token is available.
+  2. Otherwise → calls `refreshTokenRequest`, stores the new tokens, retries the original request.
+  3. If the refresh token is also expired → calls `handleLogout`.
+- **Logging**: Ignores URLs in `LOG_IGNORED_URLS` (e.g., the refresh endpoint) to avoid noise.
 
-### Logging & Logout Flow
+### Logout Flow
 
-- **Filtering**: The logging utility automatically ignores URLs defined in the constants (like the refresh endpoint).
-- **Redirection**: `handleLogout` performs a side-effect-free cleanup and uses `router.replace` to reset the user's navigation context.
+`handleLogout` clears all stored auth data via `secureStorageService` and calls `router.replace` to reset the navigation stack to the login screen without leaving a back history entry.
 
 ### Critical Gotchas
 
-- **Circular Dependencies**: Do NOT import `apiClient` into `api-client.utils.ts`. Use a raw `axios` instance for refresh and logout requests.
-- **Retry Protection**: The `_retry` flag ensures that a request is only ever retried once, preventing infinite loops if a refresh fails.
+> [!CAUTION]
+> Do NOT import `apiClient` inside `api-client.utils.ts`. The refresh and logout requests must use a raw `axios` instance to avoid circular dependency issues.
+
+> [!CAUTION]
+> The `_retry` flag on the request config ensures each request is only retried once. Without it, a failed refresh would cause an infinite retry loop.
+
+## Maintenance & Extension Guide
+
+The core interceptor logic in `api-client.ts` is stable and should rarely be touched. Follow the **Utility-First** strategy:
+
+- **Change API environment**: Update `BASE_URL` in `api-client.constants.ts`.
+- **Toggle logging**: Set `ENABLE_LOGS` in `api-client.constants.ts`.
+- **Filter sensitive routes from logs**: Add partial URL paths to `LOG_IGNORED_URLS` in `api-client.constants.ts`.
+- **Swap storage or auth logic**: Update `api-client.utils.ts` — the interceptor chain stays untouched.
 
 <br>
---- Last Updated: 2026-02-25 ---
+--- Last Updated: 2026-03-02 ---

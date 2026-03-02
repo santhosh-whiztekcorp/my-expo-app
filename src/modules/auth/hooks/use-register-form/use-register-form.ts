@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { registerSchema, type RegisterFormValues } from '../../schemas';
+import { registerSchema } from '../../schemas';
+import { type RegisterFormValues } from '../../types';
 
 export function useRegisterForm(defaultValues?: Partial<RegisterFormValues>) {
   const registerMethods = useForm<RegisterFormValues>({

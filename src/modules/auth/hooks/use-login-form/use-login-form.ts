@@ -1,7 +1,8 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import { loginSchema, type LoginFormValues } from '../../schemas';
+import { loginSchema } from '../../schemas';
+import { type LoginFormValues } from '../../types';
 
 export function useLoginForm(defaultValues?: Partial<LoginFormValues>) {
   const loginMethods = useForm<LoginFormValues>({

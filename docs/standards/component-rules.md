@@ -1,67 +1,66 @@
 # Component Rules Documentation
 
-## Module Overview
+## Overview
 
-This document defines the architectural standards for creating and organizing components. We follow a strict **Separation of Concerns** (SoC) and a category-based organization to ensure maximum reusability and maintainability.
+This document defines the standards for creating and organising components. We follow a strict **Separation of Concerns** (SoC) approach with a category-based folder structure to ensure maximum reusability and maintainability.
 
-### Separation of Concerns (SoC)
+## Component Categories
 
-Every significant component must live in its own directory. Both the **directory and all files within it** must be named in `kebab-case`.
+Components are organised into specialised directories based on their role:
 
-> [!IMPORTANT]
-> **Minimalist SoC**: Only create files that are actually used. Do not create empty or unused files (e.g., if a component doesn't need custom types or helpers, omit the `.types.ts` or `.utils.ts`).
-
-- `[component-name]/index.ts`: Standard barrel export.
-- `[component-name]/[component-name].tsx`: The visual structure and core component logic.
-- `[component-name]/[component-name].types.ts`: Specialized types/interfaces.
-- `[component-name]/[component-name].utils.ts`: Internal helper functions or adapters.
-- `[component-name]/[component-name].hooks.ts`: Extracted complex logic/custom hooks.
-- `[component-name]/[component-name].styles.ts`: Custom React Native styles (StyleSheet).
-
-#### Why SoC?
-
-- **Readability**: Keeps files focused and small, making it easier to scan the UI layout vs logic.
-- **Maintainability**: Changes in logic or types don't require hunting through a 500-line JSX file.
-- **Testability**: Pure utility functions in `.utils.ts` can be tested independently without mounting the React component.
-- **Conflict Resolution**: Reduces git merge conflicts by spreading code across specialized files.
-
-## Maintenance & Extension Guide
-
-### Component Categories
-
-Components are organized into specialized directories based on their role:
-
-1. **`ui/`**: Base visual elements that don't hold business state (e.g., `Avatar`, `Card`, `Badge`, `Button`).
-2. **`form/`**: Low-level form inputs. These are "naked" components that handle their own internal display but aren't tied to a form context (e.g., `Input`, `DatePicker`, `Textarea`).
-3. **`form-controllers/`**: These are extensions of our `form` components combined with **React Hook Form** controllers. Use these for actual form implementation to ensure consistent error handling and state management.
-4. **`custom/`**: Essential abstractions over Native or Library components (e.g., `FlatList`, `ScrollView`, `LinearGradient`, `SafeAreaView`).
-   - **Why?**: We wrap these to avoid duplicating logic (like default styles or performance props) and to allow project-wide library swaps (e.g., switching from `expo-linear-gradient` to another provider) at a single point.
-
-### What NOT to Wrap
-
-Avoid creating custom versions of simple primitive components like `View` or `Text`. These are stable, rarely change, and adding layers of abstraction over them adds unnecessary complexity.
+| Category            | Location                           | Purpose                                                                                                        |
+| ------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `ui/`               | `src/components/ui/`               | Base visual elements with no business logic (e.g., `Button`, `Avatar`, `Badge`, `Card`)                        |
+| `form/`             | `src/components/form/`             | Low-level form inputs — manage internal display only, not tied to a form library (e.g., `Input`, `DatePicker`) |
+| `form-controllers/` | `src/components/form-controllers/` | Form inputs wired to **React Hook Form** — use these for actual form screens                                   |
+| `custom/`           | `src/components/custom/`           | App-level wrappers over native or library components (e.g., `FlatList`, `ScrollView`, `LinearGradient`)        |
+| `providers/`        | `src/components/providers/`        | React context providers that wrap the entire app or sections of it                                             |
 
 > [!IMPORTANT]
-> Always check the `custom/` directory before using a Native component directly. If a wrapper exists, use it!
+> Always check `custom/` before using a native component directly. If a wrapper exists, use it to keep default styles and performance props consistent project-wide.
 
 ## Technical Deep Dive
 
-### Folder Structure Example
+### Separation of Concerns (SoC) File Pattern
+
+Every significant component lives in its own folder. Both the folder and all files within it use `kebab-case`:
 
 ```bash
 src/components/ui/button/
-├── index.ts
-├── button.tsx
-├── button.types.ts
-├── button.utils.ts
-└── button.styles.ts (Optional)
+├── index.ts              # Barrel export (re-exports the component)
+├── button.tsx            # JSX structure and core logic
+├── button.types.ts       # Props and internal type definitions
+├── button.utils.ts       # Helper functions (only if needed)
+└── button.styles.ts      # StyleSheet styles (only if needed)
 ```
+
+> [!IMPORTANT]
+> **Minimalist SoC**: Only create files that are actually needed. Do not create empty `.types.ts`, `.utils.ts`, or `.styles.ts` files just for the sake of structure.
+
+#### Why SoC?
+
+- **Readability**: Files are focused — JSX layout never mixed with business logic or type definitions.
+- **Maintainability**: Changing logic or types doesn't require navigating a 500-line JSX file.
+- **Testability**: Pure utility functions in `.utils.ts` can be unit tested without mounting a React component.
+- **Conflict Resolution**: Smaller, focused files significantly reduce git merge conflicts.
 
 ### Styling Strategy
 
-We use **NativeWind** (Tailwind CSS) for all styling. Components should receive styling primarily through props that map to Tailwind classes or by utilizing the `className` prop directly.
+We use **NativeWind** (Tailwind CSS) for all styling.
 
-If a component requires the use of the standard React Native `style` prop (e.g., for complex animations, shadows, or dynamic calculations that Tailwind cannot handle), the styles MUST be defined in the `[component-name].styles.ts` file using `StyleSheet.create`.
+- Pass styles via `className` or Tailwind-mapped props.
+- If a component needs styles that Tailwind can't express (e.g., complex animations, shadows, dynamic calculations), define them in `[component-name].styles.ts` using `StyleSheet.create`.
+
+### What NOT to Wrap
+
+Avoid creating custom versions of simple primitive components like `View` or `Text`. These are stable, don't change across library updates, and wrapping them adds unnecessary abstraction.
+
+## Maintenance & Extension Guide
+
+- **Add a `ui/` component**: Create a folder in `src/components/ui/` following the SoC pattern. Export from `src/components/ui/index.ts`.
+- **Add a `form/` input**: Create in `src/components/form/`. Expose a controlled `value` / `onChange` interface. Do NOT couple it to React Hook Form.
+- **Add a `form-controller/`**: Wrap an existing `form/` component with `useController` from React Hook Form. Re-use display logic from the base form component.
+- **Add a `custom/` wrapper**: Wrap native/library components that need shared default behaviour (default props, performance flags, unified styling). Document why the wrapper exists in a comment.
 
 <br>
---- Last Updated: 2026-02-25 ---
+--- Last Updated: 2026-03-02 ---

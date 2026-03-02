@@ -1,31 +1,27 @@
 # Type Rules Documentation
 
-## Module Overview
+## Overview
 
-This project enforces strict TypeScript typing to catch errors early and ensure a highly predictable codebase. We prioritize clarity, safety, and modern TypeScript patterns over loose or implicit types.
+This project enforces strict TypeScript typing to catch errors at compile time and ensure a highly predictable codebase. We prioritise clarity, safety, and modern TypeScript patterns over loose or implicit types.
 
-### Key Capabilities
+## Core Rules
 
-- **Strict Linting**: Disallows the `any` type project-wide.
-- **Type-Safe Navigation**: Uses route constants to ensure links never break.
-- **Schema Validation**: Uses **Zod** for runtime data validation (API responses, form inputs).
-
-## Maintenance & Extension Guide
-
-To maintain high type safety, adhere to these standards:
-
-- **No `any`**: Never use the `any` keyword. If a type is unknown, use `unknown` and perform type narrowing.
-- **Types over Interfaces**: We strictly use `type` for all definitions (objects, props, state) because it is more versatile (supports unions/intersections), prevents accidental declaration merging (side effects), and ensures a single consistent keyword for all logic and data structures.
-- **Naming**: Use `PascalCase` for all type names. Do not use "T" or "I" prefixes (e.g., use `User`, not `TUser` or `IUser`).
+| Rule                    | Detail                                                                                                                   |
+| ----------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| No `any`                | Use `unknown` and perform type narrowing. Enforced by ESLint — violations fail the build.                                |
+| `type` over `interface` | Use `type` for all definitions. More versatile (supports unions/intersections), prevents accidental declaration merging. |
+| Naming                  | `PascalCase` for all type names. No `T` or `I` prefixes — use `User`, not `TUser` or `IUser`.                            |
+| Zod for external data   | Validate all API responses and form inputs with Zod schemas. Infer the TypeScript type from the schema.                  |
+| Route types             | Use `AppRoute` from `src/constants/routes.ts` for all navigation — never pass raw strings to `router` calls.             |
 
 > [!IMPORTANT]
-> The ESLint rule `@typescript-eslint/no-explicit-any: "error"` is active. All violations will fail the build.
+> The ESLint rule `@typescript-eslint/no-explicit-any: "error"` is active. All `any` violations will fail `npm run check`.
 
 ## Technical Deep Dive
 
-### Data Validation (Zod)
+### Zod Schema Validation
 
-For robust runtime safety, validate all external data using Zod schemas and infer the type directly to ensure a single source of truth:
+For all external data (API responses, form inputs), define a Zod schema first and infer the type from it — single source of truth, runtime-safe:
 
 ```typescript
 import { z } from 'zod';
@@ -40,21 +36,38 @@ export type User = z.infer<typeof UserSchema>;
 
 ### Handling Unknown Data
 
-When dealing with external data, use `unknown` combined with type guards or casting after validation.
+When receiving data of an uncertain shape, use `unknown` with type narrowing rather than casting:
 
 ```typescript
 const handleData = (data: unknown) => {
   if (typeof data === 'string') {
-    // data is narrowed to string
+    // data is narrowed to string here
   }
 };
 ```
 
-### Domain-Specific Types
+### Where Types Live
 
-- **API Types**: Defined in `src/config/api-client/api-client.types.ts`.
-- **Route Types**: The `AppRoute` union type in `src/constants/routes.ts` facilitates type-safe navigation.
-- **Store Types**: Each Zustand store defines its own state and action types.
+| Type                          | Location                                     |
+| ----------------------------- | -------------------------------------------- |
+| API request/response shapes   | `src/config/api-client/api-client.types.ts`  |
+| Route union type (`AppRoute`) | `src/constants/routes.ts`                    |
+| Store state and actions       | Each store's own `.types.ts` file            |
+| Module-specific types         | `src/modules/[module]/types/`                |
+| Component props               | `[component-name]/[component-name].types.ts` |
+
+### `type` vs `interface` — Why We Use `type`
+
+- Supports union types: `type Status = 'active' | 'inactive'`
+- Supports intersection types: `type AdminUser = User & AdminPermissions`
+- No accidental declaration merging (a risk with `interface`)
+- Single consistent keyword for all type definitions across the codebase
+
+## Maintenance & Extension Guide
+
+- **Adding a new type**: Place it in the closest `.types.ts` file to where it's used. Promote to a shared location only if used across multiple modules.
+- **Validating a new API endpoint**: Always define a Zod schema first, then infer the type. Do not write types manually for API data.
+- **Adding a new route**: Add the path to `ROUTES` in `src/constants/routes.ts` — the `AppRoute` type updates automatically.
 
 <br>
---- Last Updated: 2026-02-25 ---
+--- Last Updated: 2026-03-02 ---

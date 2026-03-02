@@ -1,9 +1,9 @@
-import { APP_CONSTANTS } from '@/constants/app';
+import { ENV_CONSTANTS } from '@/constants/env';
 import { ROUTES } from '@/constants/routes';
 import { AUTH_API_ENDPOINTS } from '@/modules/auth';
 
 export const API_CLIENT_CONSTANTS = {
-  BASE_URL: APP_CONSTANTS.env.API_BASE_URL,
+  BASE_URL: ENV_CONSTANTS.env.API_BASE_URL,
   TIMEOUT: 10000,
   ENABLE_LOGS: true,
   LOG_IGNORED_URLS: [AUTH_API_ENDPOINTS.REFRESH],

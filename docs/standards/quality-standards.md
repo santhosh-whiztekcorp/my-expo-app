@@ -1,41 +1,104 @@
 # Quality Standards Documentation
 
-## Module Overview
+## Overview
 
-This project leverages automated tooling to maintain a high-quality codebase, ensuring consistency, readability, and type safety across all files.
+This project uses automated tooling to maintain a consistently high-quality codebase. All checks are unified into a single command that enforces formatting, linting, and type safety before any code is committed.
 
-### Automated Checks
+## Automated Checks
 
-We use a suite of tools to enforce standards. These are integrated into the development workflow and confirmed via the `npm run check` command.
+| Tool           | Purpose                                                                                          |
+| -------------- | ------------------------------------------------------------------------------------------------ |
+| **Prettier**   | Consistent code formatting — quotes, semicolons, print width, import order, Tailwind class order |
+| **ESLint**     | Coding standards and error prevention — no `any`, unused vars, React rules                       |
+| **TypeScript** | Strict compile-time type checking                                                                |
 
-- **ESLint**: Enforces project-specific coding standards and catches common errors. No `any` types are allowed.
-- **TypeScript**: Performs strict type checking to ensure compile-time safety.
-- **Prettier**: Handles consistent code formatting (tabs, quotes, semicolons).
-
-## Maintenance & Extension Guide
-
-### Automated Sorting & Ordering
-
-To reduce diff noise and improve scanability, we use specialized Prettier plugins:
-
-1. **Import Sorting**: All imports are automatically sorted into logical groups (Core, Local, External).
-   - _Tip_: Simply save your file, and the imports will reorder.
-2. **Tailwind Class Sorting**: We use the `prettier-plugin-tailwindcss` to ensure that Tailwind classes follow the recommended official order.
-   - _Why?_: This makes it easy to find specific styles (e.g., layout first, then colors) across different components.
-
-### Quality Workflow
-
-Before pushing code, run the master check script:
+Run all checks at once:
 
 ```bash
 npm run check
 ```
 
-This runs:
+This runs in order:
 
-1. `lint:fix`: Catches and fixes auto-fixable lint errors.
-2. `typeCheck`: Ensures no TypeScript errors exist.
-3. `format`: Runs Prettier to sort imports and Tailwind classes.
+1. `format` — Prettier formats all files and sorts imports + Tailwind classes.
+2. `lint:fix` — ESLint catches and auto-fixes any remaining issues.
+3. `typeCheck` — TypeScript confirms no type errors exist.
+
+> [!TIP]
+> Run `npm run check` before every push. The order matters — formatting runs first so lint rules evaluate already-formatted code.
+
+## Coding Conventions
+
+### Function Declarations vs Arrow Functions
+
+All named, exportable functions must use **`function` declarations** — not arrow functions assigned to `const`.
+
+```typescript
+// ✅ Correct
+export function useLogin() { ... }
+export async function handleLogout() { ... }
+export default function HomeScreen() { ... }
+
+// ❌ Incorrect
+export const useLogin = () => { ... }
+export const handleLogout = async () => { ... }
+```
+
+**Exceptions — `const` is correct for:**
+
+| Case                          | Example                                  |
+| ----------------------------- | ---------------------------------------- |
+| Zustand stores                | `export const useThemeStore = create(…)` |
+| Constants & config objects    | `export const ROUTES = { … }`            |
+| `forwardRef` / `cva` wrappers | `export const Button = forwardRef(…)`    |
+| Inline callbacks              | `useEffect(() => { … }, [])`             |
+
+The rule applies to named exported functions — components, hooks, utilities, and async helpers. Inline callbacks inside hooks or `.map()` / `.filter()` calls remain as arrow functions.
+
+## Technical Deep Dive
+
+### Import Sorting (`@ianvs/prettier-plugin-sort-imports`)
+
+Imports are automatically sorted into groups on save:
+
+```
+1. react / react-native / expo core
+2. Third-party libraries
+3. Internal aliases (@/...)
+4. Relative imports (./)
+```
+
+Just write your imports — Prettier reorders them on save.
+
+### Tailwind Class Sorting (`prettier-plugin-tailwindcss`)
+
+Tailwind classes are sorted into the official recommended order (layout → spacing → typography → colors → effects). This makes it easy to find specific styles when scanning components.
+
+### ESLint Configuration
+
+Configured in `eslint.config.js`. Key enforced rules:
+
+- `@typescript-eslint/no-explicit-any: "error"` — no `any` types allowed.
+- React and React Native specific rules for hooks and best practices.
+
+### Prettier Configuration
+
+Configured in `.prettierrc`. Key settings:
+
+| Setting         | Value  |
+| --------------- | ------ |
+| `singleQuote`   | `true` |
+| `semi`          | `true` |
+| `printWidth`    | `130`  |
+| `tabWidth`      | `2`    |
+| `trailingComma` | `all`  |
+
+## Maintenance & Extension Guide
+
+- **Add a new lint rule**: Update `eslint.config.js`. Document the reason in a comment next to the rule.
+- **Change formatting defaults**: Update `.prettierrc`. Run `npm run format` after to apply the new style across all files.
+- **Exclude files from formatting**: Add patterns to `.prettierignore`.
+- **Add a new file type to formatting**: Add the extension to the glob in the `format` script in `package.json`.
 
 <br>
---- Last Updated: 2026-02-25 ---
+--- Last Updated: 2026-03-02 ---
