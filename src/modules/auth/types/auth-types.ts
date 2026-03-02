@@ -1,18 +1,12 @@
 import { z } from 'zod';
 
-import { loginSchema, registerSchema } from '../schemas';
+import { type AuthResponse, type User } from '@/types';
 
-export type User = {
-  id: string;
-  email: string;
-  fullName: string;
-  avatarUrl?: string;
-};
+import { forgotPasswordSchema, loginSchema, registerSchema, resetPasswordSchema } from '../schemas';
 
-export type AuthResponse = {
-  user: User;
-  token: string;
-};
+export type { User, AuthResponse };
 
 export type LoginFormValues = z.infer<typeof loginSchema>;
 export type RegisterFormValues = z.infer<typeof registerSchema>;
+export type ForgotPasswordFormValues = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;

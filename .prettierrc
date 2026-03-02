@@ -8,8 +8,8 @@
   "plugins": ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   "importOrder": [
     "^(react/(.*)$)|^(react$)",
-    "^(expo/(.*)$)|^(expo$)",
     "^(react-native/(.*)$)|^(react-native$)",
+    "^(expo/(.*)$)|^(expo$)",
     "<THIRD_PARTY_MODULES>",
     "",
     "^@/(.*)$",

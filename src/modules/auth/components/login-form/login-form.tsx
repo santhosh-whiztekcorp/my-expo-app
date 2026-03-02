@@ -1,5 +1,5 @@
-import React from 'react';
-import { View } from 'react-native';
+import { Text, View } from 'react-native';
+import { Link } from 'expo-router';
 import { FormProvider } from 'react-hook-form';
 
 import { InputController } from '@/components/form-controllers';
@@ -26,6 +26,13 @@ export function LoginForm() {
           autoCapitalize="none"
         />
         <InputController name="password" label="Password" placeholder="Enter your password" secureTextEntry />
+
+        <View className="flex-row justify-end">
+          <Link href={'/forgot-password' as any} asChild>
+            <Text className="text-sm font-medium text-primary">Forgot Password?</Text>
+          </Link>
+        </View>
+
         <Button label="Login" onPress={onSubmit} loading={isLoginPending} className="mt-4" />
       </View>
     </FormProvider>

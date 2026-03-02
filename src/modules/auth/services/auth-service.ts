@@ -1,7 +1,7 @@
 import { apiClient } from '@/config/api-client';
 
 import { AUTH_API_ENDPOINTS } from '../constants';
-import { AuthResponse, LoginFormValues, RegisterFormValues } from '../types';
+import { AuthResponse, ForgotPasswordFormValues, LoginFormValues, RegisterFormValues, ResetPasswordFormValues } from '../types';
 
 export const authService = {
   login: async (data: LoginFormValues): Promise<AuthResponse> => {
@@ -21,5 +21,13 @@ export const authService = {
   getMe: async (): Promise<AuthResponse['user']> => {
     const response = await apiClient.get<AuthResponse['user']>(AUTH_API_ENDPOINTS.ME);
     return response.data;
+  },
+
+  forgotPassword: async (data: ForgotPasswordFormValues): Promise<void> => {
+    await apiClient.post(AUTH_API_ENDPOINTS.FORGOT_PASSWORD, data);
+  },
+
+  resetPassword: async (data: ResetPasswordFormValues): Promise<void> => {
+    await apiClient.post(AUTH_API_ENDPOINTS.RESET_PASSWORD, data);
   },
 };
