@@ -28,7 +28,7 @@ export function LoginForm() {
         <InputController name="password" label="Password" placeholder="Enter your password" secureTextEntry />
 
         <View className="flex-row justify-end">
-          <Link href={'/forgot-password' as any} asChild>
+          <Link href="/forgot-password" asChild>
             <Text className="text-sm font-medium text-primary">Forgot Password?</Text>
           </Link>
         </View>

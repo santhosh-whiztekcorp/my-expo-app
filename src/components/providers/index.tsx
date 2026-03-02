@@ -7,7 +7,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { queryClient } from '@/config/query-client';
 
 import { FontProvider } from './font-provider';
+import { NotificationProvider } from './notification-provider';
 import { ThemeProvider } from './theme-provider';
+import { ToastProvider } from './toast-provider';
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -17,7 +19,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
           <ThemeProvider>
             <SafeAreaProvider>
               <StatusBar style="auto" />
-              <KeyboardProvider>{children}</KeyboardProvider>
+              <KeyboardProvider>
+                <NotificationProvider>{children}</NotificationProvider>
+                <ToastProvider />
+              </KeyboardProvider>
             </SafeAreaProvider>
           </ThemeProvider>
         </FontProvider>
