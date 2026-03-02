@@ -13,5 +13,7 @@
   "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "css.lint.unknownAtRules": "ignore"
+  "css.lint.unknownAtRules": "ignore",
+  "prettier.resolveGlobalModules": false,
+  "prettier.useEditorConfig": false
 }
