@@ -15,7 +15,6 @@ export const Input = forwardRef<TextInput, InputProps>(function Input(
   const { colorScheme } = useColorScheme();
   const isPassword = secureTextEntry;
 
-  // Resolve HSL values for native props that don't support CSS variables
   const mutedForegroundColor = colorScheme === 'dark' ? 'hsl(24, 5.4%, 63.9%)' : 'hsl(25, 5.3%, 44.7%)';
 
   return (

@@ -16,17 +16,17 @@ The project follows a **Module-Based Architecture** with a strict **Separation o
 
 ## Folder Map
 
-| Folder            | Purpose                                                                  |
-| ----------------- | ------------------------------------------------------------------------ |
-| `src/app/`        | File-based routes and layouts (Expo Router)                              |
-| `src/components/` | Shared UI — `ui/`, `form/`, `form-controllers/`, `custom/`, `providers/` |
-| `src/config/`     | Global service configurations (API client, Query client)                 |
-| `src/constants/`  | Static data, route paths, font definitions                               |
-| `src/modules/`    | Domain-specific business features (e.g., `auth`, `user`)                 |
-| `src/services/`   | Core infrastructure services (Secure Storage, etc.)                      |
-| `src/store/`      | Global Zustand state stores                                              |
-| `src/lib/`        | Lightweight shared utilities                                             |
-| `docs/`           | Technical documentation                                                  |
+| Folder            | Purpose                                                                                     |
+| ----------------- | ------------------------------------------------------------------------------------------- |
+| `src/app/`        | File-based routes and layouts (Expo Router)                                                 |
+| `src/components/` | Shared UI — `primitives/`, `form/`, `form-controllers/`, `custom/`, `common/`, `providers/` |
+| `src/config/`     | Global service configurations (API client, Query client)                                    |
+| `src/constants/`  | Static data, route paths, font definitions                                                  |
+| `src/modules/`    | Domain-specific business features (e.g., `auth`, `user`)                                    |
+| `src/services/`   | Core infrastructure services (Secure Storage, etc.)                                         |
+| `src/store/`      | Global Zustand state stores                                                                 |
+| `src/lib/`        | Lightweight shared utilities                                                                |
+| `docs/`           | Technical documentation                                                                     |
 
 ## Technical Deep Dive
 

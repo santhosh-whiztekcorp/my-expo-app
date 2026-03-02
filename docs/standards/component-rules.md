@@ -8,13 +8,14 @@ This document defines the standards for creating and organising components. We f
 
 Components are organised into specialised directories based on their role:
 
-| Category            | Location                           | Purpose                                                                                                        |
-| ------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `primitives/`       | `src/components/primitives/`       | Base visual elements with no business logic (e.g., `Button`, `Avatar`, `Badge`, `Card`)                        |
-| `form/`             | `src/components/form/`             | Low-level form inputs — manage internal display only, not tied to a form library (e.g., `Input`, `DatePicker`) |
-| `form-controllers/` | `src/components/form-controllers/` | Form inputs wired to **React Hook Form** — use these for actual form screens                                   |
-| `custom/`           | `src/components/custom/`           | App-level wrappers over native or library components (e.g., `FlatList`, `ScrollView`, `LinearGradient`)        |
-| `providers/`        | `src/components/providers/`        | React context providers that wrap the entire app or sections of it                                             |
+| Category            | Location                           | Purpose                                                                                                                        |
+| ------------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `primitives/`       | `src/components/primitives/`       | Base visual elements with no business logic (e.g., `Button`, `Avatar`, `Badge`, `Card`)                                        |
+| `form/`             | `src/components/form/`             | Low-level form inputs — manage internal display only, not tied to a form library (e.g., `Input`, `DatePicker`)                 |
+| `form-controllers/` | `src/components/form-controllers/` | Form inputs wired to **React Hook Form** — use these for actual form screens                                                   |
+| `custom/`           | `src/components/custom/`           | App-level direct wrappers over native or library components (e.g., `CustomFlatlist`, `CustomScrollView`, `CustomSafeAreaView`) |
+| `common/`           | `src/components/common/`           | Feature-rich, composite, or specialised components (e.g., `InfiniteList`, `SafePaddingView`)                                   |
+| `providers/`        | `src/components/providers/`        | React context providers that wrap the entire app or sections of it                                                             |
 
 > [!IMPORTANT]
 > Always check `custom/` before using a native component directly. If a wrapper exists, use it to keep default styles and performance props consistent project-wide.
@@ -60,7 +61,8 @@ Avoid creating custom versions of simple primitive components like `View` or `Te
 - **Add a `primitives/` component**: Create a folder in `src/components/primitives/` following the SoC pattern. Export from `src/components/primitives/index.ts`.
 - **Add a `form/` input**: Create in `src/components/form/`. Expose a controlled `value` / `onChange` interface. Do NOT couple it to React Hook Form.
 - **Add a `form-controller/`**: Wrap an existing `form/` component with `useController` from React Hook Form. Re-use display logic from the base form component.
-- **Add a `custom/` wrapper**: Wrap native/library components that need shared default behaviour (default props, performance flags, unified styling). Document why the wrapper exists in a comment.
+- **Add a `custom/` wrapper**: Wrap native/library components that need shared default behaviour (default props, performance flags, unified styling). These are typically 1:1 wrappers.
+- **Add a `common/` component**: Create feature-rich or composite components that aren't direct wrappers (e.g., `InfiniteList` which adds loading/empty states to a list).
 
 <br>
 --- Last Updated: 2026-03-02 ---
