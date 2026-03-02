@@ -1,10 +1,8 @@
-# API Client Documentation
+# API Client
 
-## Overview
+## Location
 
-The API client is a centralized module built on **Axios** that handles all network communication. It is designed to be resilient, manage authentication seamlessly, and provide transparent logging for debugging.
-
-**Location**: `src/config/api-client/`
+`src/config/api-client/`
 
 | File                      | Responsibility                                      |
 | ------------------------- | --------------------------------------------------- |

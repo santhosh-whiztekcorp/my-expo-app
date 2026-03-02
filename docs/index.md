@@ -6,18 +6,18 @@ Welcome to the project documentation. These documents provide in-depth details a
 
 ### Core Infrastructure
 
-- [API Client](./infrastructure/api-client.md) - Configuration, interceptors, and token management.
-- [Query Client](./infrastructure/query-client.md) - TanStack Query setup and configuration.
-- [Constants](./infrastructure/constants.md) - Global application constants and route definitions.
-- [Services](./infrastructure/services.md) - Core services like Secure Storage.
-- [Providers](./infrastructure/providers.md) - Root provider hierarchy and global contexts.
+- [API Client](./infrastructure/api-client.md) - Centralized Axios-based HTTP client with auth, token refresh, and logging.
+- [Query Client](./infrastructure/query-client.md) - TanStack Query setup for caching, retries, and manual cache updates.
+- [Constants](./infrastructure/constants.md) - Global constants for environment, routes, and fonts.
+- [Services](./infrastructure/services.md) - Core infrastructure services: secure storage, notifications, and file operations.
+- [Providers](./infrastructure/providers.md) - Global React providers and their hierarchy.
 
 ### Standards & Patterns
 
-- [File & Folder Rules](./standards/file-folder-rules.md) - Project organization and naming conventions.
-- [Component Rules](./standards/component-rules.md) - UI standards and Atomic Design.
-- [Type Rules](./standards/type-rules.md) - Strict TypeScript enforcement and validation.
-- [Quality Standards](./standards/quality-standards.md) - Linting, formatting, and automated sorting rules.
+- [File & Folder Rules](./standards/file-folder-rules.md) - Module-based architecture and naming conventions.
+- [Component Rules](./standards/component-rules.md) - UI component categories and separation of concerns.
+- [Type Rules](./standards/type-rules.md) - Strict TypeScript patterns and Zod validation.
+- [Quality Standards](./standards/quality-standards.md) - Automated formatting, linting, and type checking.
 
 <br>
 --- Last Updated: 2026-03-02 ---

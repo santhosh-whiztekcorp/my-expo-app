@@ -1,8 +1,4 @@
-# File & Folder Rules Documentation
-
-## Overview
-
-The project follows a **Module-Based Architecture** with a strict **Separation of Concerns** (SoC) approach. Every concern — UI, logic, types, constants — lives in its own dedicated file within a well-defined folder. This keeps the codebase scalable, discoverable, and easy to navigate as the app grows.
+# File & Folder Rules
 
 ## Naming Conventions
 

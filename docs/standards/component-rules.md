@@ -1,8 +1,4 @@
-# Component Rules Documentation
-
-## Overview
-
-This document defines the standards for creating and organising components. We follow a strict **Separation of Concerns** (SoC) approach with a category-based folder structure to ensure maximum reusability and maintainability.
+# Component Rules
 
 ## Component Categories
 

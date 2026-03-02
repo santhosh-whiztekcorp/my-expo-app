@@ -1,10 +1,8 @@
-# Constants Documentation
+# Constants
 
-## Overview
+## Location
 
-Constants are the single source of truth for all static application data — environment configuration, persistence keys, and navigation routes. Using constants prevents magic strings from leaking into business logic and ensures type safety at compile time.
-
-**Location**: `src/constants/`
+`src/constants/`
 
 | File             | Responsibility                                                              |
 | ---------------- | --------------------------------------------------------------------------- |

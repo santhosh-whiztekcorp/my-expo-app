@@ -1,10 +1,8 @@
-# Query Client Documentation
+# Query Client
 
-## Overview
+## Location
 
-The application uses **TanStack Query (React Query)** for all asynchronous server state. It provides a structured layer for data fetching, caching, and UI synchronisation.
-
-**Location**: `src/config/query-client/`
+`src/config/query-client/`
 
 | File                        | Responsibility                                                              |
 | --------------------------- | --------------------------------------------------------------------------- |

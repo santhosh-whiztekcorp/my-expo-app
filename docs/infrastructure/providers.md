@@ -1,10 +1,6 @@
-# Providers Documentation
+# Providers
 
-## Module Overview
-
-Global providers manage cross-cutting concerns like font loading, data fetching, state management, and theming. They are orchestrated by `Providers` (`src/components/providers/index.tsx`) to ensure a consistent environment and correct dependency hierarchy across the entire application.
-
-## Provider Reference
+## Providers
 
 ### GestureHandlerRootView
 
@@ -75,6 +71,22 @@ Global providers manage cross-cutting concerns like font loading, data fetching,
 - **Purpose**: Enables advanced keyboard interaction — smooth animated resizing, keyboard height tracking, and `KeyboardAvoidingView` enhancements. Must wrap all screens that interact with the keyboard.
 - **Async**: No
 
+---
+
+### NotificationProvider
+
+- **Location**: `src/components/providers/notification-provider/`
+- **Purpose**: Sets the global `expo-notifications` handler and registers notification listeners.
+- **Async**: No
+
+---
+
+### ToastProvider
+
+- **Location**: `src/components/providers/toast-provider/`
+- **Purpose**: Mounts the global toast UI so `toast.*` calls can render feedback anywhere in the app.
+- **Async**: No
+
 ## Technical Deep Dive
 
 ### The `Providers` Hierarchy
@@ -88,7 +100,10 @@ export function Providers({ children }: { children: React.ReactNode }) {
           <ThemeProvider>
             <SafeAreaProvider>
               <StatusBar style="auto" />
-              <KeyboardProvider>{children}</KeyboardProvider>
+              <KeyboardProvider>
+                <NotificationProvider>{children}</NotificationProvider>
+                <ToastProvider />
+              </KeyboardProvider>
             </SafeAreaProvider>
           </ThemeProvider>
         </FontProvider>
@@ -108,6 +123,7 @@ App launch
 │                     returns null until hydrated (behind splash screen)
 │                     then applies color scheme + system UI styles
 ├── SafeAreaProvider / StatusBar / KeyboardProvider   sync, instant
+├── NotificationProvider / ToastProvider   sync, instant
 └── <Page />          renders with correct theme, no flash
 ```
 

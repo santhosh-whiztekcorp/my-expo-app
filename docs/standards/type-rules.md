@@ -1,8 +1,4 @@
-# Type Rules Documentation
-
-## Overview
-
-This project enforces strict TypeScript typing to catch errors at compile time and ensure a highly predictable codebase. We prioritise clarity, safety, and modern TypeScript patterns over loose or implicit types.
+# Type Rules
 
 ## Core Rules
 

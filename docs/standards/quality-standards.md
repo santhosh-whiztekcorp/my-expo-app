@@ -1,8 +1,4 @@
-# Quality Standards Documentation
-
-## Overview
-
-This project uses automated tooling to maintain a consistently high-quality codebase. All checks are unified into a single command that enforces formatting, linting, and type safety before any code is committed.
+# Quality Standards
 
 ## Automated Checks
 
