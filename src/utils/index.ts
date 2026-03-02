@@ -4,6 +4,5 @@ export * from './number';
 export * from './validation';
 export * from './device';
 export * from './json';
-export * from './file';
 export * from './project';
 export * from './toast';
