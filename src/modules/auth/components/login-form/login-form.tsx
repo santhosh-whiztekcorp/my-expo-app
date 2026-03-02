@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { FormProvider } from 'react-hook-form';
 
 import { InputController } from '@/components/form-controllers';
-import { Button } from '@/components/ui';
+import { Button } from '@/components/primitives';
 
 import { useLogin, useLoginForm } from '../../hooks';
 

@@ -75,7 +75,7 @@ src/app/
 Every significant component or service lives in its own folder:
 
 ```bash
-src/components/ui/button/
+src/components/primitives/button/
 ├── index.ts              # Barrel export
 ├── button.tsx            # JSX structure and component logic
 ├── button.types.ts       # Props and internal types

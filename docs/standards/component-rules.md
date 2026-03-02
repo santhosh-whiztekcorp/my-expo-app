@@ -10,7 +10,7 @@ Components are organised into specialised directories based on their role:
 
 | Category            | Location                           | Purpose                                                                                                        |
 | ------------------- | ---------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `ui/`               | `src/components/ui/`               | Base visual elements with no business logic (e.g., `Button`, `Avatar`, `Badge`, `Card`)                        |
+| `primitives/`       | `src/components/primitives/`       | Base visual elements with no business logic (e.g., `Button`, `Avatar`, `Badge`, `Card`)                        |
 | `form/`             | `src/components/form/`             | Low-level form inputs — manage internal display only, not tied to a form library (e.g., `Input`, `DatePicker`) |
 | `form-controllers/` | `src/components/form-controllers/` | Form inputs wired to **React Hook Form** — use these for actual form screens                                   |
 | `custom/`           | `src/components/custom/`           | App-level wrappers over native or library components (e.g., `FlatList`, `ScrollView`, `LinearGradient`)        |
@@ -26,7 +26,7 @@ Components are organised into specialised directories based on their role:
 Every significant component lives in its own folder. Both the folder and all files within it use `kebab-case`:
 
 ```bash
-src/components/ui/button/
+src/components/primitives/button/
 ├── index.ts              # Barrel export (re-exports the component)
 ├── button.tsx            # JSX structure and core logic
 ├── button.types.ts       # Props and internal type definitions
@@ -57,7 +57,7 @@ Avoid creating custom versions of simple primitive components like `View` or `Te
 
 ## Maintenance & Extension Guide
 
-- **Add a `ui/` component**: Create a folder in `src/components/ui/` following the SoC pattern. Export from `src/components/ui/index.ts`.
+- **Add a `primitives/` component**: Create a folder in `src/components/primitives/` following the SoC pattern. Export from `src/components/primitives/index.ts`.
 - **Add a `form/` input**: Create in `src/components/form/`. Expose a controlled `value` / `onChange` interface. Do NOT couple it to React Hook Form.
 - **Add a `form-controller/`**: Wrap an existing `form/` component with `useController` from React Hook Form. Re-use display logic from the base form component.
 - **Add a `custom/` wrapper**: Wrap native/library components that need shared default behaviour (default props, performance flags, unified styling). Document why the wrapper exists in a comment.
