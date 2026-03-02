@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { emailSchema, fullNameSchema, passwordSchema, strictPasswordSchema } from '@/schemas';
+import { emailSchema, nameSchema, passwordSchema, strictPasswordSchema } from '@/schemas';
 
 export const loginSchema = z.object({
   email: emailSchema,
@@ -9,7 +9,7 @@ export const loginSchema = z.object({
 
 export const registerSchema = z
   .object({
-    fullName: fullNameSchema,
+    fullName: nameSchema,
     email: emailSchema,
     password: strictPasswordSchema,
     confirmPassword: z.string(),

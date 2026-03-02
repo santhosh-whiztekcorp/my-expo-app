@@ -1,13 +1,18 @@
 import { z } from 'zod';
 
-// Email schema using Zod 4 top-level helper
-export const emailSchema = z.email({ error: 'Invalid email address' });
+export const nameSchema = z
+  .string()
+  .trim()
+  .min(2, { error: 'Name must be at least 2 characters' })
+  .max(100, { error: 'Name is too long' });
 
-// Basic password schema - only requires existence (e.g., for login)
+export const emailSchema = z.email({ error: 'Invalid email address' }).toLowerCase();
+
 export const passwordSchema = z.string().min(1, { error: 'Password is required' });
 
-// Strict password schema - enforces complexity (e.g., for signup/reset)
-export const strictPasswordSchema = z.string().min(6, { error: 'Password must be at least 6 characters' });
-
-// Full name schema
-export const fullNameSchema = z.string().min(2, { error: 'Full name is required' });
+export const strictPasswordSchema = z
+  .string()
+  .min(8, { error: 'Password must be at least 8 characters' })
+  .regex(/[A-Z]/, { error: 'Must contain at least one uppercase letter' })
+  .regex(/[a-z]/, { error: 'Must contain at least one lowercase letter' })
+  .regex(/[0-9]/, { error: 'Must contain at least one number' });
