@@ -14,7 +14,6 @@ export const ANDROID_NOTIFICATION_CHANNEL_CONFIG: Notifications.NotificationChan
 export const LOCAL_NOTIFICATION_TRIGGER_TYPE = Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL;
 
 export const DEFAULT_NOTIFICATION_BEHAVIOR: Notifications.NotificationBehavior = {
-  shouldShowAlert: true,
   shouldShowBanner: true,
   shouldShowList: true,
   shouldPlaySound: true,

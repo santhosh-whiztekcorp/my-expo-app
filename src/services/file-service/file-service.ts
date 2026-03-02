@@ -13,7 +13,10 @@ export const fileService = {
     filename,
     options = { showToast: true, showNotification: true },
   }: DownloadFileParams): Promise<string | null> {
-    const file = new File(Paths.document, filename);
+    // Generate a unique filename with timestamp
+    const timestamp = Date.now();
+    const uniqueFilename = `${timestamp}-${filename}`;
+    const file = new File(Paths.document, uniqueFilename);
 
     try {
       // 1. Show immediate UI feedback
@@ -25,8 +28,8 @@ export const fileService = {
       if (options.showNotification) {
         await notificationService.scheduleLocalNotification(
           'Download Started',
-          `Downloading ${filename}...`,
-          { action: 'download_started', filename },
+          `Downloading ${uniqueFilename}...`,
+          { action: 'download_started', filename: uniqueFilename },
           1, // Show almost immediately
         );
       }
@@ -41,7 +44,7 @@ export const fileService = {
       if (options.showNotification) {
         await notificationService.scheduleLocalNotification(
           'Download Complete',
-          `${filename} has been saved to your device.`,
+          `${uniqueFilename} has been saved to your device.`,
           { action: 'download_complete', uri: downloadedFile.uri },
           1,
         );
