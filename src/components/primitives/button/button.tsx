@@ -1,10 +1,11 @@
 import { forwardRef } from 'react';
-import { ActivityIndicator, Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, Pressable, View } from 'react-native';
 import { cva } from 'class-variance-authority';
 import { useColorScheme } from 'nativewind';
 
 import { cn } from '@/lib/cn';
 
+import { CustomText } from '../../custom/custom-text';
 import { type ButtonProps } from './button.types';
 
 export const buttonVariants = cva(
@@ -34,7 +35,7 @@ export const buttonVariants = cva(
   },
 );
 
-const buttonTextVariants = cva('text-center font-semibold text-base', {
+const buttonTextVariants = cva('text-center font-montserrat-semibold', {
   variants: {
     variant: {
       default: 'text-primary-foreground',
@@ -44,22 +45,14 @@ const buttonTextVariants = cva('text-center font-semibold text-base', {
       ghost: 'text-accent-foreground',
       link: 'text-primary underline',
     },
-    size: {
-      default: 'text-base',
-      xs: 'text-xs',
-      sm: 'text-sm',
-      lg: 'text-lg',
-      icon: 'text-base',
-    },
   },
   defaultVariants: {
     variant: 'default',
-    size: 'default',
   },
 });
 
 export const Button = forwardRef<View, ButtonProps>(function Button(
-  { label, children, loading, variant, size, className, labelClassName, disabled, ...props },
+  { label, children, loading, variant, size, className, labelClassName, textVariant, labelProps, disabled, ...props },
   ref,
 ) {
   const { colorScheme } = useColorScheme();
@@ -72,12 +65,20 @@ export const Button = forwardRef<View, ButtonProps>(function Button(
     return 'hsl(26, 83.3%, 14.1%)'; // primary-foreground
   };
 
+  const defaultTextVariant = size === 'lg' ? 'h6' : size === 'sm' || size === 'xs' ? 'span' : 'p';
+
   return (
     <Pressable ref={ref} disabled={disabled || loading} className={cn(buttonVariants({ variant, size, className }))} {...props}>
       {loading ? (
         <ActivityIndicator color={getIndicatorColor()} />
       ) : label ? (
-        <Text className={cn(buttonTextVariants({ variant, size, className: labelClassName }))}>{label}</Text>
+        <CustomText
+          variant={textVariant || defaultTextVariant}
+          {...labelProps}
+          className={cn(buttonTextVariants({ variant }), size === 'xs' && 'text-xs', labelClassName, labelProps?.className)}
+        >
+          {label}
+        </CustomText>
       ) : (
         children
       )}

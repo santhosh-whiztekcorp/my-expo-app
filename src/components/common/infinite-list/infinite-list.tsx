@@ -1,8 +1,11 @@
 import React from 'react';
-import { FlatList, Text, View } from 'react-native';
+import { FlatList, View } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
+import { cn } from '@/lib/cn';
+
 import { CustomActivityIndicator } from '../../custom/custom-activity-indicator';
+import { CustomText } from '../../custom/custom-text';
 import { InfiniteListProps } from './infinite-list.types';
 
 export function InfiniteList<T>({
@@ -12,6 +15,7 @@ export function InfiniteList<T>({
   loading,
   loadingMore,
   emptyText = 'No data available',
+  emptyTextProps,
   ListEmptyComponent,
   ListFooterComponent,
   onRefresh,
@@ -33,7 +37,9 @@ export function InfiniteList<T>({
     }
     return (
       <View className="flex-1 items-center justify-center p-10">
-        <Text className="text-center text-muted-foreground">{emptyText}</Text>
+        <CustomText {...emptyTextProps} className={cn('text-center text-muted-foreground', emptyTextProps?.className)}>
+          {emptyText}
+        </CustomText>
       </View>
     );
   };

@@ -1,8 +1,9 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { cva } from 'class-variance-authority';
 
 import { cn } from '@/lib/cn';
 
+import { CustomText } from '../../custom/custom-text';
 import { type BadgeProps } from './badge.types';
 
 export const badgeVariants = cva(
@@ -36,10 +37,20 @@ const badgeTextVariants = cva('text-xs font-semibold', {
   },
 });
 
-export function Badge({ className, variant, label, children, ...props }: BadgeProps) {
+export function Badge({ className, variant, label, labelProps, children, ...props }: BadgeProps) {
   return (
     <View className={cn(badgeVariants({ variant }), className)} {...props}>
-      {label ? <Text className={cn(badgeTextVariants({ variant }))}>{label}</Text> : children}
+      {label ? (
+        <CustomText variant="span" {...labelProps} className={cn(badgeTextVariants({ variant }), labelProps?.className)}>
+          {label}
+        </CustomText>
+      ) : typeof children === 'string' ? (
+        <CustomText variant="span" className={cn(badgeTextVariants({ variant }))}>
+          {children}
+        </CustomText>
+      ) : (
+        children
+      )}
     </View>
   );
 }

@@ -1,5 +1,6 @@
 import { type Control, type FieldValues, type Path } from 'react-hook-form';
 
+import { type CustomTextProps } from '../../custom/custom-text';
 import { type InputProps } from '../../form/input';
 
 export type InputControllerProps<T extends FieldValues> = Omit<InputProps, 'value' | 'onChangeText' | 'error'> & {
@@ -8,4 +9,7 @@ export type InputControllerProps<T extends FieldValues> = Omit<InputProps, 'valu
   label?: string;
   description?: string;
   required?: boolean;
+  labelProps?: Partial<CustomTextProps>;
+  descriptionProps?: Partial<CustomTextProps>;
+  errorProps?: Partial<CustomTextProps>;
 };

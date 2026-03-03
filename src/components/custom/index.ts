@@ -7,3 +7,4 @@ export * from './custom-linear-gradient';
 export * from './custom-pressable';
 export * from './custom-safe-area-view';
 export * from './custom-scroll-view';
+export * from './custom-text';

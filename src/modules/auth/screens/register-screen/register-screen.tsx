@@ -1,22 +1,24 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { Link } from 'expo-router';
 
-import { CustomKeyboardAwareScrollView } from '@/components/custom';
+import { CustomKeyboardAwareScrollView, CustomText } from '@/components/custom';
 
 import { RegisterForm } from '../../components';
 
 export function RegisterScreen() {
   return (
     <CustomKeyboardAwareScrollView contentContainerClassName="flex-grow justify-center p-6" className="bg-background">
-      <Text className="mb-8 text-center text-3xl font-bold text-foreground">Create Account</Text>
+      <CustomText variant="h1" className="mb-8 text-center text-foreground">
+        Create Account
+      </CustomText>
 
       <RegisterForm />
 
       <View className="mt-8 flex-row justify-center">
-        <Text className="text-muted-foreground">Already have an account? </Text>
+        <CustomText className="text-muted-foreground">Already have an account? </CustomText>
         <Link href="/login" asChild>
-          <Text className="font-bold text-primary">Login</Text>
+          <CustomText className="font-bold text-primary">Login</CustomText>
         </Link>
       </View>
     </CustomKeyboardAwareScrollView>

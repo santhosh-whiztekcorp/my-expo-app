@@ -1,24 +1,26 @@
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { Link } from 'expo-router';
 
-import { CustomKeyboardAwareScrollView } from '@/components/custom';
+import { CustomKeyboardAwareScrollView, CustomText } from '@/components/custom';
 
 import { ForgotPasswordForm } from '../../components';
 
 export function ForgotPasswordScreen() {
   return (
     <CustomKeyboardAwareScrollView contentContainerClassName="flex-grow justify-center p-6" className="bg-background">
-      <Text className="mb-4 text-center text-3xl font-bold text-foreground">Forgot Password</Text>
-      <Text className="mb-8 text-center text-muted-foreground">
+      <CustomText variant="h1" className="mb-4 text-center">
+        Forgot Password
+      </CustomText>
+      <CustomText className="mb-8 text-center text-muted-foreground">
         Enter your email address and we'll send you a link to reset your password.
-      </Text>
+      </CustomText>
 
       <ForgotPasswordForm />
 
       <View className="mt-8 flex-row justify-center">
-        <Text className="text-muted-foreground">Remember your password? </Text>
+        <CustomText className="text-muted-foreground">Remember your password? </CustomText>
         <Link href="/login" asChild>
-          <Text className="font-bold text-primary">Login</Text>
+          <CustomText className="font-bold text-primary">Login</CustomText>
         </Link>
       </View>
     </CustomKeyboardAwareScrollView>

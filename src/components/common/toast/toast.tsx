@@ -1,11 +1,12 @@
 import { memo, useMemo } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { MotiView } from 'moti';
 import { GestureDetector } from 'react-native-gesture-handler';
 import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 
 import { cn } from '@/lib/cn';
 
+import { CustomText } from '../../custom/custom-text';
 import { TOAST_VARIANTS } from './toast.constants';
 import { useToastGesture } from './toast.hooks';
 import { ToastProps } from './toast.types';
@@ -36,7 +37,7 @@ export const Toast = memo(function Toast({ id, message, type }: ToastProps) {
         <View className="mr-3">
           <Icon size={22} color={variant.iconColor} />
         </View>
-        <Text className={cn('text-md flex-1 font-bold', variant.textClass)}>{message}</Text>
+        <CustomText className={cn('text-md flex-1 font-bold', variant.textClass)}>{message}</CustomText>
       </MotiView>
     </GestureDetector>
   );
