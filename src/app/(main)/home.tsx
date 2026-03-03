@@ -1,7 +1,9 @@
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Link } from 'expo-router';
 
+import { Button } from '@/components/primitives';
 import { ROUTES } from '@/constants/routes';
+import { toast } from '@/utils';
 
 export default function HomeScreen() {
   return (
@@ -22,6 +24,13 @@ export default function HomeScreen() {
             <Text className="text-lg font-bold text-destructive">Logout (Go to Login)</Text>
           </TouchableOpacity>
         </Link>
+
+        <View className="mt-20 gap-4">
+          <Button variant="default" label="Success Toast" onPress={() => toast.success('This is a success toast')} />
+          <Button variant="destructive" label="Error Toast" onPress={() => toast.error('This is an error toast')} />
+          <Button variant="outline" label="Info Toast" onPress={() => toast.info('This is an info toast')} />
+          <Button variant="secondary" label="Warning Toast" onPress={() => toast.warning('This is a warning toast')} />
+        </View>
       </View>
     </ScrollView>
   );

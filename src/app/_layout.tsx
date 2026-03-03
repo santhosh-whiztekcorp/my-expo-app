@@ -1,6 +1,6 @@
 import { Stack } from 'expo-router';
 
-import { Providers } from '../components/providers';
+import { Providers } from '@/components/providers';
 
 import '../../global.css';
 

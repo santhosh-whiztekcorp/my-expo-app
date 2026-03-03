@@ -1,5 +1,7 @@
 import { AlertCircleIcon, CheckCircle2Icon, InfoIcon } from '@/components/primitives';
 
+export const SWIPE_THRESHOLD = 80;
+
 export const TOAST_VARIANTS = {
   success: {
     containerClass: 'bg-green-200 border-green-500',

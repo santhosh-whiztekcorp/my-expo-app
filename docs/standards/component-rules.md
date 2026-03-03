@@ -28,6 +28,7 @@ src/components/primitives/button/
 ├── button.tsx            # JSX structure and core logic
 ├── button.types.ts       # Props and internal type definitions
 ├── button.utils.ts       # Helper functions (only if needed)
+├── button.hooks.ts       # Hooks (only if needed)
 └── button.styles.ts      # StyleSheet styles (only if needed)
 ```
 

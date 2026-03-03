@@ -2,9 +2,8 @@ import { View } from 'react-native';
 import { AnimatePresence } from 'moti';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Toast } from '@/components/common';
 import { useToastStore } from '@/store/toast';
-
-import { Toast } from '../../common/toast/toast';
 
 export function ToastProvider() {
   const toasts = useToastStore((state) => state.toasts);

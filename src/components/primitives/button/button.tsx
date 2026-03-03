@@ -8,16 +8,16 @@ import { cn } from '@/lib/cn';
 import { type ButtonProps } from './button.types';
 
 export const buttonVariants = cva(
-  'flex-row items-center justify-center gap-2 rounded-xl transition-all active:opacity-80 disabled:opacity-50',
+  'flex-row items-center justify-center border border-transparent gap-2 rounded-xl transition-all active:opacity-80 disabled:opacity-50',
   {
     variants: {
       variant: {
-        default: 'bg-primary',
-        destructive: 'bg-destructive',
-        outline: 'border border-border bg-transparent active:bg-accent',
-        secondary: 'bg-secondary',
-        ghost: 'bg-transparent active:bg-accent',
-        link: 'bg-transparent',
+        default: 'bg-primary border-primary',
+        destructive: 'bg-destructive border-destructive',
+        outline: 'border-border bg-transparent active:bg-accent',
+        secondary: 'bg-secondary border-secondary',
+        ghost: 'bg-transparent border-transparent active:bg-accent',
+        link: 'bg-transparent border-transparent',
       },
       size: {
         default: 'h-12 px-6 py-3',
