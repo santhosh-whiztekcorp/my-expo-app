@@ -1,8 +1,8 @@
 import { forwardRef, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
-import { EyeIcon, EyeOffIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 
+import { EyeIcon, EyeOffIcon } from '@/components/primitives';
 import { cn } from '@/lib/cn';
 
 import { type InputProps } from './input.types';

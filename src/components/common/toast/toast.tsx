@@ -1,7 +1,7 @@
 import { Pressable, Text, View } from 'react-native';
-import { X } from 'lucide-react-native';
 import { MotiView } from 'moti';
 
+import { XIcon } from '@/components/primitives';
 import { useToastStore } from '@/store/toast';
 
 import { TOAST_VARIANTS } from './toast.constants';
@@ -24,7 +24,7 @@ export function Toast({ id, message, type }: ToastProps) {
       </View>
       <Text className={`text-md flex-1 font-medium ${variant.textClass}`}>{message}</Text>
       <Pressable onPress={() => removeToast(id)} className="ml-2 rounded-full p-1 active:bg-black/5">
-        <X size={18} color={variant.iconColor} />
+        <XIcon size={18} color={variant.iconColor} />
       </Pressable>
     </MotiView>
   );
