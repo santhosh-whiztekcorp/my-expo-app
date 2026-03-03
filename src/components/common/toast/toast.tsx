@@ -20,11 +20,11 @@ export function Toast({ id, message, type }: ToastProps) {
       className={`mx-4 mb-3 flex-row items-center rounded-xl border p-4 shadow-sm ${variant.containerClass}`}
     >
       <View className="mr-3">
-        <Icon size={20} color={variant.iconColor} />
+        <Icon size={22} color={variant.iconColor} />
       </View>
-      <Text className={`flex-1 text-sm font-medium ${variant.textClass}`}>{message}</Text>
+      <Text className={`text-md flex-1 font-medium ${variant.textClass}`}>{message}</Text>
       <Pressable onPress={() => removeToast(id)} className="ml-2 rounded-full p-1 active:bg-black/5">
-        <X size={16} color={variant.iconColor} />
+        <X size={18} color={variant.iconColor} />
       </Pressable>
     </MotiView>
   );

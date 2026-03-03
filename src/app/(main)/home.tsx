@@ -1,7 +1,6 @@
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { Link } from 'expo-router';
 
-import { Experiment } from '@/components/common/experiment';
 import { ROUTES } from '@/constants/routes';
 
 export default function HomeScreen() {
@@ -17,8 +16,6 @@ export default function HomeScreen() {
           <Text className="mb-2 text-lg font-semibold text-foreground">Welcome to your dashboard</Text>
           <Text className="text-muted-foreground">This is a placeholder for your main application content.</Text>
         </View>
-
-        <Experiment />
 
         <Link href={ROUTES.AUTH.LOGIN} asChild>
           <TouchableOpacity className="h-14 items-center justify-center rounded-xl border border-destructive/20 bg-destructive/10">
